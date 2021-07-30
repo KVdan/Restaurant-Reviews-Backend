@@ -4,7 +4,7 @@ export default class ReviewsController {
     static async apiPostReview(req, res, next) {
         try {
             const restaurantId = req.body.restaurant_id;
-            const review = req.body.text;
+            const review = req.body.text.replace(/\$/g, "&#038;");
             const userInfo = {
                 name: req.body.name,
                 _id: req.userId,
@@ -17,6 +17,7 @@ export default class ReviewsController {
                 review,
                 date
             );
+
             res.json({ status: "success", reviewResponse });
         } catch (e) {
             console.log(e);
@@ -27,7 +28,7 @@ export default class ReviewsController {
     static async apiUpdateReview(req, res, next) {
         try {
             const reviewId = req.body.review_id;
-            const text = req.body.text;
+            const text = req.body.text.replace(/\$/g, "&#038;");
             const date = new Date();
 
             const reviewResponse = await ReviewsDAO.updateReview(
